@@ -1,4 +1,5 @@
 const request = require("supertest");
+const crypto = require("node:crypto");
 
 const app = require("../src/app");
 const database = require("../database");
@@ -27,5 +28,50 @@ describe("GET /api/users/:id", () => {
     const response = await request(app).get("/api/users/0");
 
     expect(response.status).toEqual(404);
+  });
+});
+describe("POST /api/users", () => {
+  it("should return created user", async () => {
+    const newUser = {
+      firstname: "Adrien",
+      lastname: "Occitnie",
+      email: `${crypto.randomUUID()}@wild.co`,
+      city: "Toulouse",
+      language: "Frenche",
+    };
+    const response = await request(app).post("/api/users").send(newUser);
+
+    expect(response.status).toEqual(201);
+    expect(response.body).toHaveProperty("id");
+    expect(typeof response.body.id).toBe("number");
+    const [result] = await database.query(
+      "SELECT * FROM users WHERE id=?",
+
+      response.body.id
+    );
+
+    const [userInDatabase] = result;
+    expect(userInDatabase).toHaveProperty("id");
+    expect(userInDatabase).toHaveProperty("firstname");
+    expect(typeof userInDatabase.firstname).toBe("string");
+    expect(userInDatabase).toHaveProperty("lastname");
+    expect(typeof userInDatabase.lastname).toBe("string");
+    expect(userInDatabase).toHaveProperty("email");
+    expect(typeof userInDatabase.email).toBe("string");
+    expect(userInDatabase).toHaveProperty("city");
+    expect(typeof userInDatabase.city).toBe("string");
+    expect(userInDatabase).toHaveProperty("language");
+    expect(typeof userInDatabase.language).toBe("string");
+    expect(userInDatabase.title).toStrictEqual(newUser.title);
+  });
+  it("should return an error", async () => {
+    const userWithMissingProps = { firstname: "Adrien" };
+
+    const response = await request(app)
+      .post("/api/users")
+
+      .send(userWithMissingProps);
+
+    expect(response.status).toEqual(500);
   });
 });
