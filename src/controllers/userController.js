@@ -6,13 +6,12 @@ const getUsers = (req, res) => {
     .query("select * from users")
 
     .then(([users]) => {
-      res.json(users); // use res.json instead of console.log
-      res.sendStatus(200);
+      // use res.json instead of console.log
+      res.status(200).json(users);
     })
 
     .catch((err) => {
       console.error(err);
-
       res.sendStatus(404);
     });
 };
@@ -27,8 +26,8 @@ const getUsersById = (req, res) => {
     .then(([users]) => {
       if (users[0] != null) {
         console.log(res.headers);
-        res.json(users[0]);
-        res.sendStatus(200);
+
+        res.status(200).json(users[0]);
       } else {
         res.sendStatus(404);
       }
@@ -36,7 +35,25 @@ const getUsersById = (req, res) => {
 
     .catch((err) => {
       console.error(err);
+      res.sendStatus(500);
+    });
+};
+const postUser = (req, res) => {
+  const { firstname, lastname, email, city, language } = req.body;
+  database
 
+    .query(
+      "INSERT INTO users(firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)",
+
+      [firstname, lastname, email, city, language]
+    )
+
+    .then(([result]) => {
+      res.status(201).send({ id: result.insertId });
+    })
+
+    .catch((err) => {
+      console.error(err);
       res.sendStatus(500);
     });
 };
@@ -44,4 +61,5 @@ const getUsersById = (req, res) => {
 module.exports = {
   getUsers,
   getUsersById,
+  postUser,
 };
