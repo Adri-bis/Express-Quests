@@ -77,20 +77,16 @@ describe("POST /api/movies", () => {
 
       .send(movieWithMissingProps);
 
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
 });
 describe("PUT /api/movies/:id", () => {
   it("should edit movie", async () => {
     const newMovie = {
       title: "Avatar",
-
       director: "James Cameron",
-
       year: "2009",
-
       color: "1",
-
       duration: 162,
     };
     const [result] = await database.query(
@@ -106,6 +102,7 @@ describe("PUT /api/movies/:id", () => {
     );
 
     const id = result.insertId;
+
     const updatedMovie = {
       title: "Wild is life",
       director: "Alan Smithee",
@@ -137,12 +134,15 @@ describe("PUT /api/movies/:id", () => {
     expect(movieInDatabase).toHaveProperty("director");
     expect(movieInDatabase.director).toStrictEqual(updatedMovie.director);
     expect(typeof movieInDatabase.director).toBe("string");
+
     expect(movieInDatabase).toHaveProperty("year");
     expect(movieInDatabase.year).toStrictEqual(updatedMovie.year);
     expect(typeof movieInDatabase.year).toBe("string");
+
     expect(movieInDatabase).toHaveProperty("color");
     expect(movieInDatabase.color).toStrictEqual(updatedMovie.color);
     expect(typeof movieInDatabase.color).toBe("string");
+
     expect(movieInDatabase).toHaveProperty("duration");
     expect(movieInDatabase.duration).toStrictEqual(updatedMovie.duration);
     expect(typeof movieInDatabase.duration).toBe("number");
@@ -156,7 +156,7 @@ describe("PUT /api/movies/:id", () => {
 
       .send(movieWithMissingProps);
 
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
   it("should return no movie", async () => {
     const newMovie = {
