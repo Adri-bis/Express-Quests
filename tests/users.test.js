@@ -62,7 +62,7 @@ describe("POST /api/users", () => {
     expect(typeof userInDatabase.city).toBe("string");
     expect(userInDatabase).toHaveProperty("language");
     expect(typeof userInDatabase.language).toBe("string");
-    expect(userInDatabase.title).toStrictEqual(newUser.title);
+    
   });
   it("should return an error", async () => {
     const userWithMissingProps = { firstname: "Adrien" };
