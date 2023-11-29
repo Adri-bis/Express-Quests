@@ -8,7 +8,7 @@ const validateMovie = (req, res, next) => {
   } else if (title.length >= 255) {
     errors.push({
       field: "title",
-      message: "To more characters, need 2555 Max",
+      message: "To more characters, need 255 Max",
     });
   }
   if (director == null) {
@@ -16,7 +16,7 @@ const validateMovie = (req, res, next) => {
   } else if (director.length >= 255) {
     errors.push({
       field: "director",
-      message: "To more characters, need 2555 Max",
+      message: "To more characters, need 255 Max",
     });
   }
   if (year == null) {
