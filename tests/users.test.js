@@ -163,3 +163,16 @@ describe("PUT /api/users/:id", () => {
     expect(response.status).toEqual(404);
   });
 });
+describe("DELETE /api/users/:id", () => {
+  it("should delete user", async () => {
+    const response = await request(app).delete("/api/users/1");
+
+    expect(response.status).toEqual(204);
+  });
+
+  it("should fund user to delete", async () => {
+    const response = await request(app).delete("/api/users/0");
+
+    expect(response.status).toEqual(404);
+  });
+});

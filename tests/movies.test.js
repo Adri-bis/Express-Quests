@@ -172,3 +172,16 @@ describe("PUT /api/movies/:id", () => {
     expect(response.status).toEqual(404);
   });
 });
+describe("DELETE /api/movies/:id", () => {
+  it("should delete movie", async () => {
+    const response = await request(app).delete("/api/movies/1");
+
+    expect(response.status).toEqual(204);
+  });
+
+  it("should fund movie to delete", async () => {
+    const response = await request(app).delete("/api/movies/0");
+
+    expect(response.status).toEqual(404);
+  });
+});
