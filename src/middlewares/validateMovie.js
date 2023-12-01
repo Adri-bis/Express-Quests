@@ -3,7 +3,7 @@ const validateMovie = (req, res, next) => {
   const { title, director, year, color, duration } = req.body;
   const errors = [];
 
-  if (title == null && title >= 255) {
+  if (title == null) {
     errors.push({ field: "title", message: "This field is required" });
   } else if (title.length >= 255) {
     errors.push({

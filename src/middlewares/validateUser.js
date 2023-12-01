@@ -41,7 +41,7 @@ const validateUser = (req, res, next) => {
   } else if (language.length >= 255) {
     errors.push({
       field: "language",
-      message: "To more characters, need 2555 Max",
+      message: "To more characters, need 255 Max",
     });
   }
   if (errors.length) {
